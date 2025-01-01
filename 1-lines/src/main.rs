@@ -19,12 +19,12 @@ fn main() {
             input_resources: Vec::from( [] ),
             output_resources: Vec::from([ 0 ]),
         },
-        Pass {
-            shader: "1-lines/shaders/overlay.comp".to_string(),
-            dispatches: DispatchConfig::FullScreen,
-            input_resources: Vec::from( []),
-            output_resources: Vec::from([ 0 ]),
-        },
+        // Pass {
+        //     shader: "1-lines/shaders/overlay.comp".to_string(),
+        //     dispatches: DispatchConfig::FullScreen,
+        //     input_resources: Vec::from( []),
+        //     output_resources: Vec::from([ 0 ]),
+        // },
     ]);
 
     app.run(draw_config);

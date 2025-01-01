@@ -23,47 +23,6 @@ vec3 palette( in float t, in vec3 a, in vec3 b, in vec3 c, in vec3 d )
     return a + b*cos( 6.28318*(c*t+d) );
 }
 
-vec2 fold( vec2 p, float ang )
-{
-    vec2 n = vec2( cos( -ang ), sin( -ang ) );
-    p -= 2. * min( 0., dot( p, n ) ) * n;
-    return p;
-}
-
-vec2 rotate( vec2 p, float a )
-{
-    return vec2( p.x*cos( a ) - p.y*sin( a ), p.x*sin( a ) + p.y*cos( a ) );
-}
-
-float d2hline(vec2 p){
-    p.x-=max( 0.f, min( 0.08f, p.x ) );
-    return length(p);
-}
-
-vec2 scene( vec2 p )
-{
-    float pi = 3.14159;
-
-    vec2 pt = p.xy;
-
-    for( int i = 0; i < 9; i++ )
-    {
-        pt.x = abs( pt.x );
-        pt = fold( pt, pi / 6.f );
-        pt -= vec2( 1.0 + sin( constants.time ) * .14f, 0.0 );
-        pt *= 2.0;
-    }
-
-    return pt;
-}
-
-vec3 color( vec3 pos )
-{
-    float scale = 0.2;
-    float s = fract( d2hline( scene( pos.xy ) ) * scale );
-    return vec3( s );
-}
-
 void main()
 {
     ivec2 p = ivec2( gl_GlobalInvocationID.xy );
@@ -73,19 +32,6 @@ void main()
         return;
     }
 
-    vec3 col = vec3( 0.0f );
-    for( float x = -.25f; x <= .25f; x += .5f )
-    {
-        for( float y = -.25f; y <= .25f; y += .5f )
-        {
-            vec3 pos = vec3( ( p.x + x ) / float( screenSize.x ), float( p.y + y ) / float( screenSize.y ), 0.0f ) - 0.5f;
-            pos += vec3( 0.0f, 0.4f, 0.0f );
-
-            col += color( pos );
-        }
-    }
-
-    col /= 4.0f;
-
+    vec3 col = vec3( 1.0f );
     imageStore( images[ constants.out_image ], p, vec4( col, 1 ) );
 }
