@@ -1,5 +1,6 @@
 use kiyo::app::app::{App, AppConfig};
-use kiyo::app::draw_orch::{DispatchConfig, DrawConfig, Pass};
+use kiyo::app::audio_orch::AudioConfig;
+use kiyo::app::draw_orch::{ClearConfig, DispatchConfig, DrawConfig, ImageConfig, Pass};
 
 fn main() {
 
@@ -8,24 +9,24 @@ fn main() {
         height: 1000,
         vsync: true,
         log_fps: true,
+        fullscreen: false
     };
-    let app = App::new(app_config);
 
-    let mut draw_config = DrawConfig::new();
-    draw_config.passes = Vec::from([
-        Pass {
-            shader: "1-lines/shaders/fractal.comp".to_string(),
-            dispatches: DispatchConfig::FullScreen,
-            input_resources: Vec::from( [] ),
-            output_resources: Vec::from([ 0 ]),
-        },
-        // Pass {
-        //     shader: "1-lines/shaders/overlay.comp".to_string(),
-        //     dispatches: DispatchConfig::FullScreen,
-        //     input_resources: Vec::from( []),
-        //     output_resources: Vec::from([ 0 ]),
-        // },
-    ]);
+    let draw_config = DrawConfig {
+        passes: vec![
+            Pass {
+                shader: "1-lines/shaders/fractal.comp".to_string(),
+                dispatches: DispatchConfig::FullScreen,
+                input_resources: Vec::from( [] ),
+                output_resources: Vec::from([ 0 ]),
+            },
+        ],
+        images: vec![
+            ImageConfig {
+                clear: ClearConfig::None
+            }
+        ],
+    };
 
-    app.run(draw_config);
+    App::run(app_config, draw_config, AudioConfig::None);
 }
